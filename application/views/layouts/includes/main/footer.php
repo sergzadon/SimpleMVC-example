@@ -3,6 +3,7 @@
 SimpleAssetManager::printJS();
 ?>
 
+<!--
 <div class="footer">
     <div class="container">
        <span title="orioginal text:  2017. All rights reserved. I will find you." style="color: #cbc4c4"> 
@@ -14,4 +15,10 @@ SimpleAssetManager::printJS();
     </div>
    
 </div>
+-->
+            <div class="footer">
+                Простая PHP CMS &copy; 2017. Все права принадлежат всем. ;) <a href="http://fkn.ktu10.com/?q=node/7716">Site ITForFree</a>
+            </div>
+
+
 

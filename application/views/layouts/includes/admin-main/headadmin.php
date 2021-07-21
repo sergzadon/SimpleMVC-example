@@ -1,9 +1,9 @@
 <?php 
 use ItForFree\SimpleAsset\SimpleAssetManager;
-use application\assets\CustomCSSAsset;
+use application\assets\FrontCSSAsset;
 
 
-CustomCSSAsset::add();
+FrontCSSAsset::add();
 SimpleAssetManager::printCss();
 ?>
 <head>
@@ -17,5 +17,3 @@ SimpleAssetManager::printCss();
 </div>
     
 </head>
-
-

@@ -1,14 +1,14 @@
 <?php 
 use ItForFree\SimpleAsset\SimpleAssetManager;
-use application\assets\CustomCSSAsset;
+use application\assets\FrontCSSAsset;
 
 
-CustomCSSAsset::add();
+FrontCSSAsset::add();
 SimpleAssetManager::printCss();
 ?>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=windows-1251" />
-    <title>SimpleMVC | Учебный проект</title>   
+    <title>FirstCMS | Учебный проект</title>   
     
     <div class="row">
     <div class="col">
@@ -17,5 +17,3 @@ SimpleAssetManager::printCss();
 </div>
     
 </head>
-
-

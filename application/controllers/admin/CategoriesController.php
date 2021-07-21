@@ -1,6 +1,6 @@
 <?php
 namespace application\controllers\admin;
-use application\models\Note;
+use application\models\Category;
 use ItForFree\SimpleMVC\Config;
 
 /* 
@@ -9,7 +9,7 @@ use ItForFree\SimpleMVC\Config;
  * 
  */
 
-class NotesController extends \ItForFree\SimpleMVC\mvc\Controller
+class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
 {
     
     public $layoutPath = 'notemain.php';
@@ -17,13 +17,13 @@ class NotesController extends \ItForFree\SimpleMVC\mvc\Controller
     
     public function indexAction()
     {
-        $Note = new Note();
+        $Category = new Category();
 
-        $noteId = $_GET['id'] ?? null;
+        $categoryId = $_GET['id'] ?? null;
         
-        if ($noteId) { // если указан конктреный пользователь
-            $viewNotes = $Note->getById($_GET['id']);
-            $this->view->addVar('viewNotes', $viewNotes);
+        if ($categoryId) { // если указан конкретный пользователь
+            $viewCategories = $Category->getById($_GET['id']);
+            $this->view->addVar('viewCategories', $viewCategories);
             $this->view->render('note/view-item.php');
         } else { // выводим полный список
             

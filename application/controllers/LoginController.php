@@ -3,13 +3,16 @@ namespace application\controllers;
 use ItForFree\SimpleMVC\Config;
 use ItForFree\SimpleMVC\Url;
 
+
+$n = 0;
 class LoginController extends \ItForFree\SimpleMVC\mvc\Controller
 {
     
     /**
      * {@inheritDoc}
      */
-    public $layoutPath = 'main.php';
+    public $layoutPath = 'admin-main.php';
+    
         
     /** 
      * @var string Название страницы
@@ -31,7 +34,8 @@ class LoginController extends \ItForFree\SimpleMVC\mvc\Controller
             $pass = $_POST['password'];
             $User = Config::getObject('core.user.class');
             if($User->login($login, $pass)) {
-                $this->redirect(Url::link("homepage/index"));
+//                $this->redirect(Url::link("homepage/index"));
+                $this->redirect(Url::link("admin/articles/index"));
             }
             else {
                 $this->redirect(Url::link("login/login&auth=deny"));

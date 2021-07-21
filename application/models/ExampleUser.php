@@ -164,4 +164,6 @@ class ExampleUser extends \ItForFree\SimpleMVC\User
         $st->bindValue( ":id", $this->id, \PDO::PARAM_INT );
         $st->execute();
     }
+    
+
 }

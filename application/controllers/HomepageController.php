@@ -5,6 +5,7 @@ use application\assets\NewCustomCSSAsset;
 use application\models\Article;
 use application\models\Category;
 use application\models\Subcategory;
+use application\models\ExampleUser;
 
 /**
  * Контроллер для домашней страницы
@@ -34,9 +35,9 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
 //        FrontCSSAsset::add();
          // список статей
          $frontResults = Array();
-         $Article = new Article();
+         $Article = new Article;
          $results = array();
-         $data = $Article->getList();
+         $data = $Article->getList(5);
          $results["articles"] = $data['results'];
 //            echo "<pre>";
 //            print_r($results);
@@ -44,11 +45,17 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
 //            die();
          
          $i = 0;
-         $Category = new Category();
+         $Category = new Category;
          $Subcategory = new Subcategory;
+         $Author = new ExampleUser;
          foreach ($results["articles"] as $article ) {
          $category = $Category->getById($article->categoryId);
          $subcategory = $Subcategory->getById($article->subcategoryId);
+         $author = $Author->getAuthors($article->id);
+//                     echo "<pre>";
+//            print_r($author);
+//            echo "<pre>";
+//            die();
            $frontResults[$i] = (object) array_merge((array)$article, (array)$category, (array)$subcategory);
            $i += 1;
 //         $results['totalRows'] = $data['totalRows'];

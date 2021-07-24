@@ -81,7 +81,6 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
                 $Subcategory = new Subcategory();
                 if($Subcategory->getById( $newArticle->subcategoryId
                 )->outerId !=  $newArticle->categoryId ) {
-
                 $results["errorMessage"] = "Данная подкатегория не соответствует категории";
                 $Article = new Article;
                 $results['article'] = $Article->loadFromArray($_POST);

@@ -24,13 +24,13 @@
         <!--<input type="text" class="form-control" name="title" id="title" placeholder="имя заметки">-->
     </div>
     <div class="form-group">
-        <label for="content">Описание</label><br>
-        <textarea type="description" name="summary" placeholder="описание заметки" value=>"<?php echo htmlspecialchars( $articles->summary )?>"</textarea>
+        <label for="summary">Описание</label><br>
+        <textarea type="description" name="summary" placeholder="описание заметки" value=><?php echo htmlspecialchars( $articles->summary )?></textarea>
         <!--<textarea type="description" name="summary" placeholred="описание заметки"  value=></textarea>-->
     </div>
     <div class="form-group">
         <label for="content">Содержание</label><br>
-        <textarea type="description" name="content" placeholred="описание заметки"  value=></textarea>
+        <textarea type="description" name="content" placeholred="описание заметки"  value=><?php echo htmlspecialchars( $articles->content )?></textarea>
     </div>
     <div class="form-group">
     <label for="categoryId">Article Category</label>
@@ -58,6 +58,15 @@
              <option value="<?php echo $user->id?>"><?php echo htmlspecialchars( $user->login )?></option>
            <?php } ?>
            </select>
+    </div>
+    <div>
+        <label for="active">Active</label>
+                <INPUT NAME="ActiveArticle" TYPE="CHECKBOX" VALUE="1"
+                    <?php
+                        if ($articles->active == 1){
+                           echo "checked";
+                        }
+                    ?>  >
     </div>
     <input type="submit" class="btn btn-primary" name="saveNewNote" value="Сохранить">
     <input type="submit" class="btn" name="cancel" value="Назад">

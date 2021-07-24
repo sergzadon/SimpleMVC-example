@@ -73,21 +73,63 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
         if (!empty($_POST)) {
             if (!empty($_POST['saveNewNote'])) {
                 $Article = new Article();
-                $newArticles = $Articles->loadFromArray($_POST);
+                $newArticle = $Article->loadFromArray($_POST);
+//            echo "<pre>";
+//            print_r($newArticle);
+//            echo "<pre>";
+//            die();
+                $Subcategory = new Subcategory();
+                if($Subcategory->getById( $newArticle->subcategoryId
+                )->outerId !=  $newArticle->categoryId ) {
+
+                $results["errorMessage"] = "Данная подкатегория не соответствует категории";
+                $Article = new Article;
+                $results['article'] = $Article->loadFromArray($_POST);
+                
+                $User = new ExampleUser();
+                $Category = new Category();
+                $Subcategory = new Subcategory();
+                $data = $Category->getList();
+                $results['categories'] = $data['results'];
+
+                $data = $Subcategory->getList();
+                $results['subcategories'] = $data['results'];
+
+                $data = $User->getList();
+                $results["users"] = $data['results'];
+                $addArticleTitle = "Добавление новой главы";
+                $this->view->addVar('categories', $results['categories']);
+                $this->view->addVar('subcategories', $results['subcategories']);
+                $this->view->addVar('users',$results["users"]);
+                $this->view->addVar('articles',$results['article']);
+                $this->view->addVar('addArticleTitle', $addArticleTitle);
+                if(isset($results["errorMessage"])){
+                   $this->view->addVar('errorMessage', $results["errorMessage"]); 
+                }
+                
+
+                $this->view->render('article/add.php');
+                
+                }
+            else {
+          //А здесь данные массива $article уже неполные(есть только Число от даты, категория и полный текст статьи)          
                 $newArticles->insert(); 
                 $this->redirect($Url::link("admin/articles/index"));
+             }
+                
             } 
-            elseif (!empty($_POST['cancel'])) {
+            
+        }
+        elseif (!empty($_POST['cancel'])) {
                 $this->redirect($Url::link("admin/articles/index"));
             }
-        }
        // выводим форму для заполнения
         else {
 //            $Article = new Article();
+            $results['article'] = new Article;
             $User = new ExampleUser();
             $Category = new Category();
             $Subcategory = new Subcategory();
-            $results['article'] = new Article;
             $data = $Category->getList();
             $results['categories'] = $data['results'];
 
@@ -97,7 +139,7 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
             $data = $User->getList();
             $results["users"] = $data['results'];
             
-            $results['article'] = new Article;
+//            $results['article'] = new Article;
     //            echo "<pre>";
     //            print_r(count($results["users"]));
     //            echo "<pre>";

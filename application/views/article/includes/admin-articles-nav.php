@@ -18,7 +18,7 @@ $User = Config::getObject('core.user.class');
     
     <?php  if ($User->isAllowed("admin/articles/add")): ?>
     <li class="nav-item ">
-        <a class="nav-link" href="<?= Url::link("admin/articles/add") ?>"> + Добавить заметку</a>
+        <a class="nav-link" href="<?= Url::link("admin/articles/add") ?>"> + Добавить статью</a>
     </li>
     <?php endif; ?>  
 </ul>

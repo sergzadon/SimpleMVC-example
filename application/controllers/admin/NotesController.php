@@ -43,6 +43,10 @@ class NotesController extends \ItForFree\SimpleMVC\mvc\Controller
             if (!empty($_POST['saveNewNote'])) {
                 $Note = new Note();
                 $newNotes = $Note->loadFromArray($_POST);
+//                            echo "<pre>";
+//            print_r($newNotes);
+//            echo "<pre>";
+//            die();
                 $newNotes->insert(); 
                 $this->redirect($Url::link("admin/notes/index"));
             } 

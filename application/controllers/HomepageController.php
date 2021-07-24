@@ -36,7 +36,7 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
          $frontResults = Array();
          $Article = new Article();
          $results = array();
-         $data = $Article->getList(5,null,"publicationDate DESC",1);
+         $data = $Article->getList();
          $results["articles"] = $data['results'];
 //            echo "<pre>";
 //            print_r($results);

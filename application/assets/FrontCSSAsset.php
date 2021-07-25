@@ -9,17 +9,14 @@ use application\assets\BootstrapAsset;
  * 
  */
 
-class NewCustomCSSAsset extends SimpleAsset {
+class FrontCSSAsset extends SimpleAsset {
     
     public $basePath = '/';
     
     public $css = [
-        'CSS/style_1.css'
-    ];
-    
-    public $needs = [    
-             
+        'CSS/newstyle.css'
     ];     
     
 }
+
 

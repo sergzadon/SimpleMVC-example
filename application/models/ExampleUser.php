@@ -164,4 +164,32 @@ class ExampleUser extends \ItForFree\SimpleMVC\User
         $st->bindValue( ":id", $this->id, \PDO::PARAM_INT );
         $st->execute();
     }
+    
+    /*
+     * вывод авторов статьи
+     */
+    public function getAuthors($id) {
+        $tableName = "users_articles";
+        $sql = "SELECT * FROM  $tableName LEFT JOIN users ON user_id = id 
+               WHERE users_articles.article_id = :id ";
+
+        $modelClassName = static::class;
+        
+        $st = $this->pdo->prepare($sql); 
+        
+        $st->bindValue(":id", $id, \PDO::PARAM_INT);
+        $st->execute();
+//        $row = $st->fetch(); 
+        
+        $list = array();
+        
+        while ($row = $st->fetch()) {
+            $article = new $modelClassName( $row );
+            $list[] = $article;
+        }
+
+        return $list;
+      
+    }
+    
 }

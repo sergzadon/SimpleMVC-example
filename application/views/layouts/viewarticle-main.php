@@ -5,13 +5,11 @@ use ItForFree\SimpleMVC\Config;
 $User = Config::getObject('core.user.class');
 
 ?>
-<!DOCTYPE html>
 <html>
-    <?php include('includes/admin-main/headadmin.php'); ?>
+    <?php // include('includes/newmain/headfront.php'); ?>
     <body>
-        <?php  include('includes/newmain/head2.php'); ?>
-        <?php // include('includes/admin-main/newnav2.php'); ?>
-        <?php //  include('includes/admin-main/nav.php'); ?>
+        <?php // include('includes/main/nav.php'); ?>
+        <?php // include('includes/newmain/head2.php'); ?>
         <div class="container">
             <?= $CONTENT_DATA ?>
         </div>

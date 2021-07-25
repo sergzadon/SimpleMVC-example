@@ -3,13 +3,17 @@ namespace application\controllers\admin;
 use ItForFree\SimpleMVC\Config;
 use \application\models\ExampleUser;
 
+//namespace application\controllers\admin;
+//use application\models\Note;
+//use ItForFree\SimpleMVC\Config;
+
 /**
  * Администрирование пользователей
  */
 class AdminusersController extends \ItForFree\SimpleMVC\mvc\Controller
 {
     
-    public $layoutPath = 'admin-main.php';
+    public $layoutPath = 'usermain.php';
     
     protected $rules = [ //вариант 2:  здесь всё гибче, проще развивать в дальнешем
          ['allow' => true, 'roles' => ['admin']],
@@ -24,7 +28,7 @@ class AdminusersController extends \ItForFree\SimpleMVC\mvc\Controller
         $Adminusers = new ExampleUser();
         $userId = $_GET['id'] ?? null;
         
-        if ($userId) { // если указан конктреный пользователь
+        if ($userId) { // если указан конкретный пользователь
             $viewAdminusers = $Adminusers->getById($_GET['id']);
             $this->view->addVar('viewAdminusers', $viewAdminusers);
             $this->view->render('user/view-item.php');
@@ -47,7 +51,6 @@ class AdminusersController extends \ItForFree\SimpleMVC\mvc\Controller
                 $Adminusers = new ExampleUser();
                 $newAdminusers = $Adminusers->loadFromArray($_POST);
                 $newAdminusers->insert(); 
-                $this->redirect($Url::link("admin/adminusers/index"));
             } 
             elseif (!empty($_POST['cancel'])) {
                 $this->redirect($Url::link("admin/adminusers/index"));

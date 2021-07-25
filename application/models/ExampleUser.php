@@ -179,7 +179,7 @@ class ExampleUser extends \ItForFree\SimpleMVC\User
         
         $st->bindValue(":id", $id, \PDO::PARAM_INT);
         $st->execute();
-        $row = $st->fetch(); 
+//        $row = $st->fetch(); 
         
         $list = array();
         
@@ -195,26 +195,26 @@ class ExampleUser extends \ItForFree\SimpleMVC\User
       
     }
     
-    public function getById($id, $tableName = '')
-    {  
-        $tableName = !empty($tableName) ? $tableName : $this->tableName;
+    public function getList($numRows=1000000)  
+    {
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM $this->tableName
+                ORDER BY  $this->orderBy LIMIT :numRows";
+        
 //            echo "<pre>";
-//            print_r($tableName);
+//            print_r($this->orderBy);
 //            echo "<pre>";
 //            die();
-        $sql = "SELECT * FROM $tableName where id = :id";      
         $modelClassName = static::class;
-        
-        $st = $this->pdo->prepare($sql); 
-        
-        $st->bindValue(":id", $id, \PDO::PARAM_INT);
+       
+        $st = $this->pdo->prepare($sql);
+        $st->bindValue( ":numRows", $numRows, \PDO::PARAM_INT );
         $st->execute();
-        $row = $st->fetch();
+        $list = array();
         
-        if ($row) { 
-            return new $modelClassName( $row );
-        } else {
-            return null;
+        while ($row = $st->fetch()) {
+            $example = new $modelClassName($row);
+            $list[] = $example;
+            
         }
     }
 }

@@ -35,7 +35,7 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
 //        FrontCSSAsset::add();
          // список статей
          $frontResults = Array();
-         $Article = new Article;
+         $Article = new Article();
          $results = array();
          $data = $Article->getList(5);
          $results["articles"] = $data['results'];
@@ -45,9 +45,9 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
 //            die();
          
          $i = 0;
-         $Category = new Category;
-         $Subcategory = new Subcategory;
-         $Author = new ExampleUser;
+         $Category = new Category();
+         $Subcategory = new Subcategory();
+         $Author = new ExampleUser();
          foreach ($results["articles"] as $article ) {
          $category = $Category->getById($article->categoryId);
          $subcategory = $Subcategory->getById($article->subcategoryId);
@@ -56,7 +56,7 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
 //            print_r($author);
 //            echo "<pre>";
 //            die();
-           $frontResults[$i] = (object) array_merge((array)$article, (array)$category, (array)$subcategory);
+           $frontResults[$i] = (object) array_merge((array)$article, (array)$category, (array)$subcategory,(array)$author);
            $i += 1;
 //         $results['totalRows'] = $data['totalRows'];
          }
@@ -64,7 +64,7 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
          
 //         $results['totalRows'] = $data['totalRows'];
 //            echo "<pre>";
-//            print_r($results['articles']);
+//            print_r($frontResults[0]);
 //            echo "<pre>";
 //            die();
 //            $this->view->addVar('homepageTitle', $this->homepageTitle); // передаём переменную по view

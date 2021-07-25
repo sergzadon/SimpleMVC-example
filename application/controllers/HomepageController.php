@@ -24,9 +24,7 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
     public function indexAction()
     
     {
-        NewCustomCSSAsset::add();
-        $this->view->addVar('homepageTitle', $this->homepageTitle); // передаём переменную по view
+        $this->view->('homepageTitle', $this->homepageTitle); // передаём переменную по view
         $this->view->render('homepage/index.php');
     }
 }
-

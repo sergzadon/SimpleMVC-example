@@ -24,7 +24,7 @@ $User = Config::getObject('core.user.class');
     <?php foreach($articles as $article): ?>
     <tr>
         <td> <?= $article->publicationDate ?> </td>
-        <td> <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/view/index&id=' 
+        <td> <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/articles/index&id=' 
 		. $article->id . ">{$article->title}</a>" ) ?> </td>
         <td> <?php 
                  if(isset ($article->categoryId) && $article->categoryId > 0) {

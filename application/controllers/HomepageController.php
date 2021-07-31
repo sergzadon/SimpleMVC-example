@@ -21,9 +21,6 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
      * @var string Пусть к файлу макета 
      */
 
-//    public $layoutPath = 'main.php';
-
-
     public $layoutPath = 'frontmain.php';
       
     /**
@@ -39,36 +36,34 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
          $results = array();
          $data = $Article->getList(5);
          $results["articles"] = $data['results'];
-//            echo "<pre>";
-//            print_r($results);
-//            echo "<pre>";
-//            die();
-         
-         $i = 0;
          $Category = new Category();
          $Subcategory = new Subcategory();
          $Author = new ExampleUser();
-         foreach ($results["articles"] as $article ) {
-         $category = $Category->getById($article->categoryId);
-         $subcategory = $Subcategory->getById($article->subcategoryId);
-         $author = $Author->getAuthors($article->id);
-//                     echo "<pre>";
-//            print_r($author);
-//            echo "<pre>";
-//            die();
-           $frontResults[$i] = (object) array_merge((array)$article, (array)$category, (array)$subcategory,(array)$author);
-           $i += 1;
-//         $results['totalRows'] = $data['totalRows'];
+         
+         $data = $Category->getList();
+         $results['categories'] = array();
+         foreach ( $data['results'] as $category ) {
+            $results['categories'][$category->id] = $category;
          }
          
-//         FirstSiteSimpleMVC
-//         $results['totalRows'] = $data['totalRows'];
+         $data = $Subcategory->getList();
+         $results["subcategories"] = array();
+    
+        foreach($data["results"] as $subcategory){
+            $results["subcategories"][$subcategory->id] = $subcategory;
+        }
+ 
 //            echo "<pre>";
-//            print_r($frontResults[0]);
+//            print_r($_GET);
 //            echo "<pre>";
 //            die();
 //            $this->view->addVar('homepageTitle', $this->homepageTitle); // передаём переменную по view
-            $this->view->addVar('frontResults', $frontResults);
+            $this->view->addVar('articles', $results["articles"]);
+            $this->view->addVar('categories', $results['categories']);
+            $this->view->addVar('subcategories', $results['subcategories']);
+            $this->view->addVar('Author', $Author);
             $this->view->render('homepage/index.php');
     }
+    
+    
 }

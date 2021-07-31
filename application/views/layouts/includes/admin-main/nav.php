@@ -31,6 +31,12 @@ $User = Config::getObject('core.user.class');
         </li>
         <?php endif; ?>
         
+        <?php  if ($User->isAllowed("admin/authors/index")): ?>
+        <li class="nav-item ">
+            <a class="nav-link" href="<?= Url::link("admin/authors/index") ?>"> Авторы </a>
+        </li>
+        <?php endif; ?>
+        
         <?php  if ($User->isAllowed("admin/notes/index")): ?>
         <li class="nav-item ">
             <a class="nav-link" href="<?= Url::link("admin/notes/index") ?>"> Заметки </a>

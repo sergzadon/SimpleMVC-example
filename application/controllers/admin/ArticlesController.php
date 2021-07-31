@@ -166,7 +166,11 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
             if (!empty($_POST['saveChanges'] )) {
                 $Article = new Article();
                 $newArticle = $Article->loadFromArray($_POST);
-                $newArticles->update();
+//                            echo "<pre>";
+//            print_r($newArticle);
+//            echo "<pre>";
+//            die();
+                $newArticle->update();
                 $this->redirect($Url::link("admin/articles/index&id=$id"));
             } 
             elseif (!empty($_POST['cancel'])) {

@@ -70,5 +70,31 @@ class Article extends BaseExampleModel {
            echo 8989;
         }
         
+        
+      /*
+     * вывод  статьи автора
+     */
+    public function getAuthorsBooks($id) {
+        $sql = "SELECT * FROM  articles LEFT JOIN users_articles ON article_id = id 
+               WHERE users_articles.user_id = :id" ;
+
+        $modelClassName = static::class;
+        
+        $st = $this->pdo->prepare($sql); 
+        
+        $st->bindValue(":id", $id, \PDO::PARAM_INT);
+        $st->execute();
+//        $row = $st->fetch(); 
+        
+        $list = array();
+        
+        while ($row = $st->fetch()) {
+            $article = new $modelClassName( $row );
+            $list[] = $article;
+        }
+
+        return $list;
+      
+    }
 }
 

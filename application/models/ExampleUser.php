@@ -192,4 +192,68 @@ class ExampleUser extends \ItForFree\SimpleMVC\User
       
     }
     
+    /**
+     *  вывод  всех авторов статей
+     */
+    public  function getAllAuthors() {
+        $sql = "SELECT DISTINCT user_id FROM  users_articles";
+;
+        $modelClassName = static::class;
+        $st = $this->pdo->prepare($sql);
+
+        $listAuthors = array();
+        $st->execute();
+        
+        $count = 0;
+        while ($row = $st->fetch()) {
+          $listAuthors[] = $row["user_id"];
+          $count += 1;
+        }
+
+        $list = array();
+        $sql2 = "SELECT SQL_CALC_FOUND_ROWS *  FROM  users WHERE id = :id";
+
+        $modelClassName = static::class;
+        $st = $this->pdo->prepare($sql2);
+        $i = 0;
+
+        while($i < $count) {
+           $st->bindValue(":id", $listAuthors[$i], \PDO::PARAM_INT);
+           $st->execute();
+           $st->execute();
+           $row = $st->fetch();
+           $author = new $modelClassName( $row );
+            $list[] = $author;
+           $i += 1;
+        }
+        return $list;
+    }
+        
+     /*
+     * вывод  статьи автора
+     */
+    public function getAuthorsBooks($id) {
+        $sql = "SELECT * FROM  articles LEFT JOIN users_articles ON article_id = id 
+               WHERE users_articles.user_id = :id" ;
+
+        $modelClassName = static::class;
+        
+        $st = $this->pdo->prepare($sql); 
+        
+        $st->bindValue(":id", $id, \PDO::PARAM_INT);
+        $st->execute();
+//        $row = $st->fetch(); 
+        
+        $list = array();
+        
+        while ($row = $st->fetch()) {
+            $article = new $modelClassName( $row );
+            $list[] = $article;
+        }
+
+        return $list;
+      
+    }
+
+    
 }

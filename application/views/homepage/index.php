@@ -2,26 +2,32 @@
 
 use application\assets\DemoJavascriptAsset;
 DemoJavascriptAsset::add();
+use ItForFree\SimpleMVC\Config;
+use ItForFree\SimpleMVC\Url;
 
+$User = Config::getObject('core.user.class');
 
 ?>
 
      <ul id="headlines">
-    <?php foreach ($frontResults as $article) { ?>
+    <?php foreach ($articles as $article) { ?>
         <li class='<?php echo $article->id?>'>
             <h2>
                 <span class="pubDate">
                     <?= $article->publicationDate ?> ;
                 </span>
                 
-                <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/viewArticle&id=' 
+<!--                <a class="article-front" href="<?= Url::link('admin/viewarticle/view&id=' 
+		. $article->id ) ?>"> <?php echo $article->title ?> </a>
+            -->
+                <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/viewarticle/index&id=' 
 		. $article->id . ">{$article->title}</a>" ) ?>
                 
                 <?php if (isset($article->categoryId)) { ?>
                     <span class="category">
                         Категория 
                         <a href=".?action=archive&amp;categoryId=<?php echo $article->categoryId?>">
-                            <?php echo htmlspecialchars($article->name )?>
+                            <?php echo htmlspecialchars($categories[$article->categoryId]->name )?>
                         </a>
                     </span>
                 <?php } 
@@ -36,7 +42,8 @@ DemoJavascriptAsset::add();
                     <span class="subcategory">
                         Подкатегория 
                         <a href=".?action=subcategoryArchive&amp;subcategoryId=<?php echo $article->subcategoryId?>">
-                            <?php echo htmlspecialchars($article->titleSubcat)?>
+                            <?php echo htmlspecialchars($subcategories[$article->subcategoryId]->titleSubcat)?>
+                        </a>
                         </a>
                     </span>
             </h2>
@@ -49,9 +56,34 @@ DemoJavascriptAsset::add();
                         </span>
                     </h2>
                 <?php } ?>
-            
-
-                
+            <span class="subcategory">
+                        
+                <h1> Авторы </h1>
+                        <h2>
+                       <?php 
+                            $count = 0;
+                            $listAuthors = $Author->getAuthors($article->id);
+                            foreach($listAuthors as $Authors ) {
+//                                echo $Authors->login." ";
+//                                $count += 1;
+//                                if($count != count($listAuthors)) {
+//                                    echo ",";
+//                                } ?>
+                             <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/authors/index&id=' 
+		. $Authors->id . ">{$Authors->login}</a>" ) ?>
+                                
+                                <?php 
+                                $count += 1;
+                                if($count != count($listAuthors)) {
+                                    echo ",";
+                                } ?>
+                             </a>
+                          <?php  } 
+                            $count = 0;
+                        ?>
+                             
+                        </h2>
+                    </span>
             <p class="summary"><?php echo htmlspecialchars($article->summary)?></p>
             <p class="summary"><?php echo htmlspecialchars(mb_strimwidth($article->content, 0, 50,"..."))?></p>
             <img id="loader-identity" src="JS/ajax-loader.gif" alt="gif">
@@ -65,7 +97,9 @@ DemoJavascriptAsset::add();
         </li>
     <?php } ?>
     </ul>
-    <p><a href="./?action=archive">Article Archive</a></p>
+ 
+    <a href="<?=  \ItForFree\SimpleMVC\Url::link('archive/index') ?>">Archive</a>
+
 <!--<div class="row">
     <div class="col"><h1 class="callAlert"><?php echo $homepageTitle ?></h1>
         </div>

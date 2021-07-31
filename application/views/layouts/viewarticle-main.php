@@ -6,9 +6,9 @@ $User = Config::getObject('core.user.class');
 
 ?>
 <html>
-    <?php // include('includes/newmain/headfront.php'); ?>
+    <?php  include('includes/newmain/head1.php'); ?>
     <body>
-        <?php // include('includes/main/nav.php'); ?>
+        <?php  include('includes/admin-main/nav.php'); ?>
         <?php // include('includes/newmain/head2.php'); ?>
         <div class="container">
             <?= $CONTENT_DATA ?>

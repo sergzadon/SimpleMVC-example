@@ -35,7 +35,7 @@ class ArchiveController extends \ItForFree\SimpleMVC\mvc\Controller
         $results['category'] = $Category->getById( $categoryId );
         
         if ($categoryId) { // если указан конктреный id категории сортировка по категории
-            $viewArticle = $Article->getList(10000,$results['category'] ? $results['category']->id : null );
+            $viewArticle = $Article->getList(10000,$results['category'] ? $results['category']->id : null, 0 );
             $this->view->addVar('viewNotes', $viewNotes);
             $this->view->render('note/view-item.php');
         } else { // выводим полный список статей

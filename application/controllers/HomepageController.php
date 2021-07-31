@@ -31,38 +31,29 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
     {
 //        FrontCSSAsset::add();
          // список статей
-         $frontResults = Array();
+        
+        $Category = new Category();
+
+        $categoryId = $_GET['id'] ?? null;
+        
+        if ($categoryId) { // если указан конктреный пользователь
+            $viewCategories = $Category->getList(5,null,1);
+            $this->view->addVar('viewNotes', $viewNotes);
+            $this->view->render('note/view-item.php');
+        }
+        else{
+           $frontResults = Array();
          $Article = new Article();
          $results = array();
-         $data = $Article->getList(5);
+         $data = $Article->getList(5,null,1);
          $results["articles"] = $data['results'];
-         $Category = new Category();
-         $Subcategory = new Subcategory();
          $Author = new ExampleUser();
          
-         $data = $Category->getList();
-         $results['categories'] = array();
-         foreach ( $data['results'] as $category ) {
-            $results['categories'][$category->id] = $category;
-         }
-         
-         $data = $Subcategory->getList();
-         $results["subcategories"] = array();
-    
-        foreach($data["results"] as $subcategory){
-            $results["subcategories"][$subcategory->id] = $subcategory;
-        }
- 
-//            echo "<pre>";
-//            print_r($_GET);
-//            echo "<pre>";
-//            die();
-//            $this->view->addVar('homepageTitle', $this->homepageTitle); // передаём переменную по view
             $this->view->addVar('articles', $results["articles"]);
-            $this->view->addVar('categories', $results['categories']);
-            $this->view->addVar('subcategories', $results['subcategories']);
             $this->view->addVar('Author', $Author);
-            $this->view->render('homepage/index.php');
+            $this->view->render('homepage/index.php'); 
+        }
+         
     }
     
     

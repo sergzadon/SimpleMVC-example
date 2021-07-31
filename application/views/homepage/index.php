@@ -4,11 +4,17 @@ use application\assets\DemoJavascriptAsset;
 DemoJavascriptAsset::add();
 use ItForFree\SimpleMVC\Config;
 use ItForFree\SimpleMVC\Url;
-
+use application\models\Category;
+use application\models\Subcategory;
 $User = Config::getObject('core.user.class');
 
 ?>
-
+<?php 
+      $Category = new Category();
+      $Subcategory = new Subcategory();
+      
+ ?>
+      
      <ul id="headlines">
     <?php foreach ($articles as $article) { ?>
         <li class='<?php echo $article->id?>'>
@@ -26,9 +32,10 @@ $User = Config::getObject('core.user.class');
                 <?php if (isset($article->categoryId)) { ?>
                     <span class="category">
                         Категория 
-                        <a href=".?action=archive&amp;categoryId=<?php echo $article->categoryId?>">
-                            <?php echo htmlspecialchars($categories[$article->categoryId]->name )?>
-                        </a>
+      
+                            <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/authors/index&id=' 
+		. $article->id . ">{$Category->getById($article->categoryId)->name}</a>" ) ?>
+                         
                     </span>
                 <?php } 
                 else { ?>
@@ -41,10 +48,10 @@ $User = Config::getObject('core.user.class');
                 <?php if (isset($article->subcategoryId) && $article->subcategoryId > 0) { ?>    
                     <span class="subcategory">
                         Подкатегория 
-                        <a href=".?action=subcategoryArchive&amp;subcategoryId=<?php echo $article->subcategoryId?>">
-                            <?php echo htmlspecialchars($subcategories[$article->subcategoryId]->titleSubcat)?>
-                        </a>
-                        </a>
+                        
+                            <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/authors/index&id=' 
+		. $article->id . ">{$Subcategory->getById($article->subcategoryId)->titleSubcat}</a>" ) ?>
+                         
                     </span>
             </h2>
                 <?php }

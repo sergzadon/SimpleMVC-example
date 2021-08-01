@@ -15,7 +15,12 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
     /**
      * @var string Название страницы
      */
-    public $homepageTitle = "Домашняя страница";
+    public $archiveCategory = " Категория";
+    
+    /**
+     * @var string Название страницы
+     */
+    public $categoryTitle = "Домашняя страница";
     
     /**
      * @var string Пусть к файлу макета 
@@ -31,21 +36,52 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
     {
 //        FrontCSSAsset::add();
          // список статей
-        
+        $Article = new Article();
+        $Author = new ExampleUser();
         $Category = new Category();
+        $Subcategory = new Subcategory();
+        $results = array();
 
         $categoryId = $_GET['id'] ?? null;
         
-        if ($categoryId) { // если указан конктреный пользователь
-            $viewCategories = $Category->getList(5,null,1);
-            $this->view->addVar('viewNotes', $viewNotes);
-            $this->view->render('note/view-item.php');
+        if ($categoryId) { // если указан конкретный пользователь
+            $data = $Article->getFrontList(100000, $categoryId, false);
+            //             echo "<pre>";
+//    print_r($data);
+//    echo "</pre>";
+//    die();
+            $results["articles"] = $data["results"];
+            $data = $Category->getList();
+        $results['categories'] = array();
+
+        foreach ( $data['results'] as $category ) {
+            $results['categories'][$category->id] = $category;
+        }
+        
+        $data = $Subcategory->getList();
+        $results['subcategories'] = array();
+
+        foreach ( $data['results'] as $subcategory ) {
+            $results['subcategories'][$subcategory->id] = $subcategory;
+        }
+            
+            $this->view->addVar('articles', $results["articles"]);
+            $this->view->addVar('categories', $results['categories']);
+            $this->view->addVar('subcategories', $results['subcategories']);
+            $this->view->addVar('Authors', $Author);
+            $this->view->addVar('categoryTitle', $this->archiveCategory);
+            $this->view->render('archive/indexarchive.php');
         }
         else{
-           $frontResults = Array();
+//           $frontResults = Array();
          $Article = new Article();
          $results = array();
-         $data = $Article->getList(5,null,1);
+
+         $data = $Article->getFrontList(5,null,1);
+//             echo "<pre>";
+//    print_r($data);
+//    echo "</pre>";
+//    die();
          $results["articles"] = $data['results'];
          $Author = new ExampleUser();
          

@@ -33,8 +33,8 @@ $User = Config::getObject('core.user.class');
                     <span class="category">
                         Категория 
       
-                            <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('admin/authors/index&id=' 
-		. $article->id . ">{$Category->getById($article->categoryId)->name}</a>" ) ?>
+                            <?= "<a href=" . \ItForFree\SimpleMVC\Url::link('homepage/index&id=' 
+		. $article->categoryId . ">{$Category->getById($article->categoryId)->name}</a>" ) ?>
                          
                     </span>
                 <?php } 

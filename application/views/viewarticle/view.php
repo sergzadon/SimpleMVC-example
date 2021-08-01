@@ -42,3 +42,4 @@ $User = Config::getObject('core.user.class');
 
 <p><?= $article->content ?></p>
 <p>Зарегестрирована: <?= $article->publicationDate ?></p>
+

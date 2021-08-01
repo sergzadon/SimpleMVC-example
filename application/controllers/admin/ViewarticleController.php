@@ -41,20 +41,6 @@ class ViewArticleController extends \ItForFree\SimpleMVC\mvc\Controller
 //            }
             $Authors = new ExampleUser();
             $listAuthors = $Authors->getAuthors($articleId);
-//            echo "<pre>";
-//            if($_GET["route"] == "admin/viewarticle/index"){
-//            print_r(67678);
-//            echo "<pre>";
-//            die();
-//            }
-
-        //    $listAuthors = getAuthors($articleId) ;
-
-//            $results['authors'] = array();
-//
-//            foreach($listAuthors as $authors) {
-//               $results['authors'][$authors->id] = $authors;
-//            }
 //            
 //            echo "<pre>";
 //            print_r($results['authors']);

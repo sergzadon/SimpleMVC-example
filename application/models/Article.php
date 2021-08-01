@@ -28,10 +28,7 @@ class Article extends BaseExampleModel {
     
     public $active = null;
     
-    
-    
-    
-    
+
     public function insert()
     {
         $sql = "INSERT INTO $this->tableName (title, content, publicationDate,summary,categoryId,subcategoryId,active) VALUES (:title, :content, :publicationDate,:summary,:categoryId,:subcategoryId,:active)"; 
@@ -95,6 +92,40 @@ class Article extends BaseExampleModel {
 
         return $list;
       
+    }
+    
+    public function getFrontList($numRows=1000000, $categoryId = null, $active = false)  
+    {   
+        $Clause = $categoryId ? " WHERE categoryId = :categoryId" : "";
+        if($active !== false){
+            $Clause = " WHERE  active = :active";
+        }
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM $this->tableName
+           $Clause ORDER BY  $this->orderBy LIMIT :numRows";
+        
+        $modelClassName = static::class;
+       
+        $st = $this->pdo->prepare($sql);
+        $st->bindValue( ":numRows", $numRows, \PDO::PARAM_INT );
+        if($active !== false){
+           $st->bindValue( ":active", $active, \PDO::PARAM_INT ); 
+        }
+        if($categoryId){
+           $st->bindValue( ":categoryId", $categoryId, \PDO::PARAM_INT ); 
+        }
+ 
+        $st->execute();
+        $list = array();
+        
+        while ($row = $st->fetch()) {
+            $example = new $modelClassName($row);
+            $list[] = $example;
+        }
+
+        $sql = "SELECT FOUND_ROWS() AS totalRows"; //  получаем число выбранных строк
+        $totalRows = $this->pdo->query($sql)->fetch();
+	
+        return (array("results" => $list, "totalRows" => $totalRows[0]));
     }
 }
 

@@ -43,5 +43,7 @@ class Category extends BaseExampleModel {
         $st->bindValue( ":id", $this->id, \PDO::PARAM_INT );
         $st->execute();
     }
+    
+    
 }
 

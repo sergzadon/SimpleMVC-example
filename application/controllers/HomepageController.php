@@ -15,12 +15,12 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
     /**
      * @var string Название страницы
      */
-    public $archiveCategory = " Категория";
+//    public $archiveCategory = " Категория";
     
     /**
      * @var string Название страницы
      */
-    public $categoryTitle = "Домашняя страница";
+//    public $categoryTitle = "Домашняя страница";
     
     /**
      * @var string Пусть к файлу макета 
@@ -42,17 +42,22 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
         $Subcategory = new Subcategory();
         $results = array();
 
-        $categoryId = $_GET['id'] ?? null;
+        $categoryId = $_GET['categoryId'] ?? null;
         
-        if ($categoryId) { // если указан конкретный пользователь
+        if ($categoryId) { // если указана конкретная категория
             $data = $Article->getFrontList(100000, $categoryId, false);
-            //             echo "<pre>";
+//             echo "<pre>";
 //    print_r($data);
+//    echo "</pre>";
+//    die();
+            $CategoryName = $Category->getById($categoryId)->name;
+//                         echo "<pre>";
+//    print_r($CategoryName);
 //    echo "</pre>";
 //    die();
             $results["articles"] = $data["results"];
             $data = $Category->getList();
-        $results['categories'] = array();
+            $results['categories'] = array();
 
         foreach ( $data['results'] as $category ) {
             $results['categories'][$category->id] = $category;
@@ -69,11 +74,12 @@ class HomepageController extends \ItForFree\SimpleMVC\mvc\Controller
             $this->view->addVar('categories', $results['categories']);
             $this->view->addVar('subcategories', $results['subcategories']);
             $this->view->addVar('Authors', $Author);
-            $this->view->addVar('categoryTitle', $this->archiveCategory);
+//            $this->view->addVar('categoryTitle', $this->archiveCategory);
+            $this->view->addVar('CategoryName', $CategoryName);
             $this->view->render('archive/indexarchive.php');
         }
-        else{
-//           $frontResults = Array();
+        else{  // выводим 5 активных статей на главной
+
          $Article = new Article();
          $results = array();
 

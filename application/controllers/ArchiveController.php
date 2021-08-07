@@ -15,7 +15,7 @@ class ArchiveController extends \ItForFree\SimpleMVC\mvc\Controller
     /**
      * @var string Название страницы
      */
-    public $homepageTitle = "Архив";
+    public $ArticleTitle = "Article archive";
     
     /**
      * @var string Пусть к файлу макета 
@@ -30,17 +30,35 @@ class ArchiveController extends \ItForFree\SimpleMVC\mvc\Controller
      public function  indexAction() 
     {
         $Category = new Category();
-
-        $categoryId = $_GET['id'] ?? null;
+        $Article = new Article();
+        
+        $results = [];
+        $categoryId = $_GET['categoryId'] ?? null;
         $results['category'] = $Category->getById( $categoryId );
+        if($results['category']){
+            $results['category'] = $results['category'];
+        }
+        else{
+           $results['category'] = 0; 
+        }
         
         if ($categoryId) { // если указан конктреный id категории сортировка по категории
-            $viewArticle = $Article->getList(10000,$results['category'] ? $results['category']->id : null, 0 );
-            $this->view->addVar('viewNotes', $viewNotes);
-            $this->view->render('note/view-item.php');
+            $data = $Article->getFrontList(10000,$results['category'] ? $results['category']->id : null, false );
+            $results['articles'] = $data['results'];
+            $this->view->addVar('articles', $results['articles']);
+            $this->view->addVar('category', $results['category']);
+            $this->view->render('archive/indexarchive.php');
         } else { // выводим полный список статей
         
         $results = [];
+        $categoryId = $_GET['categoryId'] ?? null;
+        $results['category'] = $Category->getById( $categoryId );
+        if($results['category']){
+            $results['category'] = $results['category'];
+        }
+        else{
+           $results['category'] = 0; 
+        }
         $Article = new Article();
         $Category = new Category();
         $Subcategory = new Subcategory();
@@ -72,13 +90,14 @@ class ArchiveController extends \ItForFree\SimpleMVC\mvc\Controller
     
 //        $results['pageHeading'] = $results['category'] ?  $results['category']->name : "Article Archive";
 //            echo "<pre>";
-//            print_r($_GET);
+//            print_r($results['category']);
 //            echo "<pre>";
 //            die();
         $this->view->addVar('articles', $results["articles"]);
         $this->view->addVar('categories', $results['categories']);
         $this->view->addVar('subcategories', $results['subcategories']);
-        $this->view->addVar('homepageTitle', $this->homepageTitle);
+        $this->view->addVar('ArticleTitle', $this->ArticleTitle);
+        $this->view->addVar('category', $results['category']);
         $this->view->addVar('Authors', $Authors);
         $this->view->render('archive/indexarchive.php');
        }

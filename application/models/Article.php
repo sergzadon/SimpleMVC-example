@@ -28,6 +28,8 @@ class Article extends BaseExampleModel {
     
     public $active = null;
     
+    public $authors = [];
+    
 
     public function insert()
     {
@@ -42,32 +44,61 @@ class Article extends BaseExampleModel {
         $st->bindValue( ":active", $this->active, \PDO::PARAM_STR );
         $st->execute();
         $this->id = $this->pdo->lastInsertId();
+        
+        foreach($this->authors as $author) {
+            $sql2 = "INSERT INTO users_articles(user_id, article_id)
+                    VALUES(:user_id, :article_id)";
+            $st = $this->pdo->prepare ( $sql );
+            $st->bindValue(":user_id",$author,PDO::PARAM_INT);
+            $st->bindValue(":article_id", $this->id,PDO::PARAM_INT);
+            $st->execute();
+            
+        }
     }
     
     public function update()
     {
-        $sql = "UPDATE $this->tableName SET publicationDate=:publicationDate, title=:title, content=:content WHERE id = :id";  
+//            echo "<pre>";
+//            print_r($this->id);
+//            echo "<pre>";
+//            die();
+        $sql = "UPDATE $this->tableName SET publicationDate=:publicationDate, title=:title, content=:content,"
+                . " summary = :summary,categoryId= :categoryId, subcategoryId= :subcategoryId,active= :active WHERE id = :id";  
         $st = $this->pdo->prepare ( $sql );
+//                   echo "<pre>";
+//            print_r($sql);
+//            echo "<pre>";
+//            die();
         
         $st->bindValue( ":publicationDate", (new \DateTime('NOW'))->format('Y-m-d H:i:s'), \PDO::PARAM_STMT);
         $st->bindValue( ":title", $this->title, \PDO::PARAM_STR );
-
+        $st->bindValue( ":categoryId", $this->categoryId, \PDO::PARAM_INT );
+        $st->bindValue( ":title", $this->title, \PDO::PARAM_STR );
+        $st->bindValue( ":summary", $this->summary, \PDO::PARAM_STR );
+        $st->bindValue( ":content", $this->content, \PDO::PARAM_STR );
+        $st->bindValue(":active", $this->active, \PDO::PARAM_INT);
+        $st->bindValue(":subcategoryId",$this->subcategoryId,\PDO::PARAM_INT);
         $st->bindValue( ":content", $this->content, \PDO::PARAM_STR );
         $st->bindValue( ":id", $this->id, \PDO::PARAM_INT );
+        
         $st->execute();
+        
+        // удаляем запись в таблице связей
+        $sql2 = "DELETE FROM users_articles WHERE article_id = :article_id";
+        $st = $this->pdo->prepare ( $sql2 );
+        $st->bindValue(":article_id", $this->id, \PDO::PARAM_INT);
+        $st->execute();
+        // вставляем в таблицу связей авторов
+          foreach ($this->authors as $authorId) {
+              $sql3 = "INSERT INTO users_articles(user_id, article_id) 
+                       VALUES(:user_id, :article_id)";
+              $st = $this->pdo->prepare($sql3);
+              $st->bindValue(":user_id", $authorId, \PDO::PARAM_INT);
+              $st->bindValue(":article_id", $this->id, \PDO::PARAM_INT);
+              $st->execute();         
+          }
     }
-    
-    /*
-     * 
-     */
 
-        public function getFrontArticles($numRows=1000000, 
-        $categoryId=null, $order="publicationDate DESC",$active = false,
-        $subcategoryId = null) { 
-           echo 8989;
-        }
-        
-        
       /*
      * вывод  статьи автора
      */
@@ -94,6 +125,12 @@ class Article extends BaseExampleModel {
       
     }
     
+    /**
+     * Извлечет данные и вернет массив моделей из базы данных.
+     * 
+     * @param int $numRows ограничение на число строк
+     * @return array
+     */
     public function getFrontList($numRows=1000000, $categoryId = null, $active = false)  
     {   
         $Clause = $categoryId ? " WHERE categoryId = :categoryId" : "";

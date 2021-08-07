@@ -1,6 +1,6 @@
 <?php
 namespace application\controllers\admin;
-use application\models\Category;
+use application\models\Subcategory;
 use ItForFree\SimpleMVC\Config;
 
 /* 
@@ -9,10 +9,10 @@ use ItForFree\SimpleMVC\Config;
  * 
  */
 
-class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
+class SubcategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
 {
     
-    public $layoutPath = 'categoriesmain.php';
+    public $layoutPath = 'notemain.php';
     
     
     public function indexAction()
@@ -24,12 +24,12 @@ class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
         if ($categoryId) { // если указан конкретный пользователь
             $viewCategories = $Category->getById($_GET['id']);
             $this->view->addVar('viewCategories', $viewCategories);
-            $this->view->render('note/view-item.php');
+            $this->view->render('category/view-item.php');
         } else { // выводим полный список
             
-            $categories = $Category->getList()['results'];
-            $this->view->addVar('categories', $categories);
-            $this->view->render('category/index.php');
+            $notes = $Note->getList()['results'];
+            $this->view->addVar('notes', $notes);
+            $this->view->render('note/index.php');
         }
     }
     
@@ -128,3 +128,4 @@ class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
     
     
 }
+

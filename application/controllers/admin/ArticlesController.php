@@ -80,37 +80,40 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
                 }
                 $Article = new Article();
                 $newArticle = $Article->loadFromArray($_POST);
-                
+//            echo "<pre>";
+//            print_r($newArticle);
+//            echo "<pre>";
+//            die();
                 $Subcategory = new Subcategory();
-                if($Subcategory->getById( $newArticle->subcategoryId
+                
+                if(!isset($Subcategory->getById( $newArticle->subcategoryId
+                )->outerId ) || $Subcategory->getById( $newArticle->subcategoryId
                 )->outerId !=  $newArticle->categoryId ) {
-                $results["errorMessage"] = "Данная подкатегория не соответствует категории";
-                $Article = new Article;
-                $results['article'] = $Article->loadFromArray($_POST);
-                
-                $User = new ExampleUser();
-                $Category = new Category();
-                $Subcategory = new Subcategory();
-                $data = $Category->getList();
-                $results['categories'] = $data['results'];
+                    $results["errorMessage"] = "Данная подкатегория не соответствует категории";
+    //                $Article = new Article;
+                    $results['article'] = $Article->loadFromArray($_POST);
 
-                $data = $Subcategory->getList();
-                $results['subcategories'] = $data['results'];
+                    $User = new ExampleUser();
+                    $Category = new Category();
+                    $Subcategory = new Subcategory();
+                    $data = $Category->getList();
+                    $results['categories'] = $data['results'];
 
-                $data = $User->getList();
-                $results["users"] = $data['results'];
-                $addArticleTitle = "Добавление новой главы";
-                $this->view->addVar('categories', $results['categories']);
-                $this->view->addVar('subcategories', $results['subcategories']);
-                $this->view->addVar('users',$results["users"]);
-                $this->view->addVar('articles',$results['article']);
-                $this->view->addVar('addArticleTitle', $addArticleTitle);
-                if(isset($results["errorMessage"])){
-                   $this->view->addVar('errorMessage', $results["errorMessage"]); 
-                }
-                
+                    $data = $Subcategory->getList();
+                    $results['subcategories'] = $data['results'];
 
-                $this->view->render('article/add.php');
+                    $data = $User->getList();
+                    $results["users"] = $data['results'];
+                    $addArticleTitle = "Добавление новой главы";
+                    $this->view->addVar('categories', $results['categories']);
+                    $this->view->addVar('subcategories', $results['subcategories']);
+                    $this->view->addVar('users',$results["users"]);
+                    $this->view->addVar('articles',$results['article']);
+                    $this->view->addVar('addArticleTitle', $addArticleTitle);
+                    if(isset($results["errorMessage"])){
+                       $this->view->addVar('errorMessage', $results["errorMessage"]); 
+                    }
+                    $this->view->render('article/add.php');
                 
                 }
             else {
@@ -119,7 +122,7 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
                 $this->redirect($Url::link("admin/articles/index"));
              }
                 
-            } 
+          } 
             
         }
         elseif (!empty($_POST['cancel'])) {
@@ -132,6 +135,7 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
             $User = new ExampleUser();
             $Category = new Category();
             $Subcategory = new Subcategory();
+            
             $data = $Category->getList();
             $results['categories'] = $data['results'];
 
@@ -140,6 +144,8 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
 
             $data = $User->getList();
             $results["users"] = $data['results'];
+            
+            
             
 //            $results['article'] = new Article;
                 $addArticleTitle = "Добавление новой главы";
@@ -160,35 +166,138 @@ class ArticlesController extends \ItForFree\SimpleMVC\mvc\Controller
     {
         $id = $_GET['id'];
         $Url = Config::get('core.url.class');
+        $User = new ExampleUser();
+        $Category = new Category();
+        $Article = new Article();
+        $Authors = new ExampleUser();
         
         if (!empty($_POST)) { // это выполняется нормально.
             
-            if (!empty($_POST['saveChanges'] )) {
+            if (!empty($_POST['saveEditArticle'] )) {
                 $Article = new Article();
+                $Subcategory = new Subcategory();
+                if (isset($_POST['active'])) {
+                    $_POST['active'] = 1;
+                }
+                else{
+                    $_POST['active'] = 0; 
+                }
                 $newArticle = $Article->loadFromArray($_POST);
-//                            echo "<pre>";
-//            print_r($newArticle);
-//            echo "<pre>";
-//            die();
-                $newArticle->update();
-                $this->redirect($Url::link("admin/articles/index&id=$id"));
+                if($Subcategory->getById( $newArticle->subcategoryId
+                )->outerId !=  $newArticle->categoryId ) {
+                    
+                $results['article'] = new Article();
+            
+                $results['article'] = $Article->getById($id);
+                $Subcategory = new Subcategory();
+
+                $data = $Category->getList();
+                $results['categories'] = $data['results'];
+
+                $data = $Subcategory->getList();
+                $results['subcategories'] = $data['results'];
+
+                $data = $User->getList();
+                $results["users"] = $data['results'];
+
+                if(isset($_GET['id'])) {
+                    $listAuthors = $Authors->getAuthors($_GET["id"]);
+    //                            echo "<pre>";
+    //            print_r($listAuthors);
+    //            echo "<pre>";
+    //            die();
+                    function authorsArticle($list) {
+                        $arrId = [];
+                        foreach($list as $idAuthor){
+                           $arrId[] = $idAuthor->id;
+                        }
+                        return $arrId;
+                    }
+                }
+               $idAuthors = authorsArticle($listAuthors);
+               $results["errorMessage"] = "Данная подкатегория не соответствует категории";
+    //            echo "<pre>";
+    //            print_r($idAuthors);
+    //            echo "<pre>";
+    //            die();
+            
+//            $results['article'] = new Article;
+//                $addArticleTitle = "Добавление новой главы";
+                $this->view->addVar('categories', $results['categories']);
+                $this->view->addVar('subcategories', $results['subcategories']);
+                $this->view->addVar('users',$results["users"]);
+                $this->view->addVar('articles',$results['article']);
+                $this->view->addVar('users',$results["users"]);
+                $this->view->addVar('editArticleTitle',$results["errorMessage"]);
+                $this->view->addVar('idAuthors', $idAuthors);
+                $this->view->render('article/edit.php');  
+                   
+//                $this->redirect($Url::link("admin/articles/index&id=$id"));
+               }
+               else {
+//                echo "<pre>";
+//                print_r(6778678);
+//                echo "<pre>";
+//                die();
+                 //А здесь данные массива $article уже неполные(есть только Число от даты, категория и полный текст статьи)          
+                 $newArticle->update(); 
+                $this->redirect($Url::link("admin/articles/index"));
+               }
             } 
+        }
             elseif (!empty($_POST['cancel'])) {
                 $this->redirect($Url::link("admin/articles/index&id=$id"));
             }
-        }
         else {
-            $Article = new Article();
-            $viewArticles = $Article->getById($id);
+            $results['article'] = new Article();
             
-            $editArticleTitle = "Редактирование заметки";
+            $results['article'] = $Article->getById($id);
+            $Subcategory = new Subcategory();
             
-            $this->view->addVar('viewArticles', $viewArticles);
-            $this->view->addVar('editArticleTitle', $editArticleTitle);
+            $data = $Category->getList();
+            $results['categories'] = $data['results'];
+
+            $data = $Subcategory->getList();
+            $results['subcategories'] = $data['results'];
+
+            $data = $User->getList();
+            $results["users"] = $data['results'];
             
+            if(isset($_GET['id'])) {
+                $listAuthors = $Authors->getAuthors($_GET["id"]);
+//                            echo "<pre>";
+//            print_r($listAuthors);
+//            echo "<pre>";
+//            die();
+                function authorsArticle($list) {
+                    $arrId = [];
+                    foreach($list as $idAuthor){
+                       $arrId[] = $idAuthor->id;
+                    }
+                    return $arrId;
+                }
+            }
+           $idAuthors = authorsArticle($listAuthors);
+           $editArticleTitle = "Редактирование заметки";
+//            echo "<pre>";
+//            print_r($idAuthors);
+//            echo "<pre>";
+//            die();
+            
+//            $results['article'] = new Article;
+//                $addArticleTitle = "Добавление новой главы";
+                $this->view->addVar('categories', $results['categories']);
+                $this->view->addVar('subcategories', $results['subcategories']);
+                $this->view->addVar('users',$results["users"]);
+                $this->view->addVar('articles',$results['article']);
+                $this->view->addVar('users',$results["users"]);
+                $this->view->addVar('editArticleTitle',$editArticleTitle);
+            $this->view->addVar('idAuthors', $idAuthors);
             $this->view->render('article/edit.php');  
         }
         
+      
+    
     }
     
     /**

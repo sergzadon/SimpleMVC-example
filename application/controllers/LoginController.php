@@ -3,8 +3,6 @@ namespace application\controllers;
 use ItForFree\SimpleMVC\Config;
 use ItForFree\SimpleMVC\Url;
 
-
-$n = 0;
 class LoginController extends \ItForFree\SimpleMVC\mvc\Controller
 {
     

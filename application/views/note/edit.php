@@ -13,6 +13,10 @@ use ItForFree\SimpleMVC\Config;
 
 $Url = Config::getObject('core.url.class');
 $User = Config::getObject('core.user.class');
+//            echo "<pre>";
+//            print_r($User);
+//            echo "<pre>";
+//            die();
 ?>
 
 <?php include('includes/admin-notes-nav.php'); ?>

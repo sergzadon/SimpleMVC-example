@@ -48,6 +48,18 @@ $User = Config::getObject('core.user.class');
             <a class="nav-link" href="<?= Url::link("admin/articles/index") ?>"> Статьи </a>
         </li>
         <?php endif; ?>
+        
+        <?php  if ($User->isAllowed("admin/categories/index")): ?>
+        <li class="nav-item ">
+            <a class="nav-link" href="<?= Url::link("admin/categories/index") ?>"> Категории </a>
+        </li>
+        <?php endif; ?>
+        
+        <?php  if ($User->isAllowed("admin/subcategories/index")): ?>
+        <li class="nav-item ">
+            <a class="nav-link" href="<?= Url::link("admin/subcategories/index") ?>"> Подкатегории </a>
+        </li>
+        <?php endif; ?>
               
         <?php  if ($User->isAllowed("login/logout")): ?>
         <li class="nav-item ">

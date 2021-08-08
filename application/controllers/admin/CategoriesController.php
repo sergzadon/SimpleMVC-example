@@ -21,10 +21,10 @@ class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
 
         $categoryId = $_GET['id'] ?? null;
         
-        if ($categoryId) { // если указан конкретный пользователь
+        if ($categoryId) { // если указан конкретная категория
             $viewCategories = $Category->getById($_GET['id']);
             $this->view->addVar('viewCategories', $viewCategories);
-            $this->view->render('note/view-item.php');
+            $this->view->render('category/view-item.php');
         } else { // выводим полный список
             
             $categories = $Category->getList()['results'];
@@ -34,27 +34,28 @@ class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
     }
     
     /**
-     * Выводит на экран форму для создания новой статьи (только для Администратора)
+     * Выводит на экран форму для создания новой категории (только для Администратора)
      */
     public function addAction()
     {
         $Url = Config::get('core.url.class');
         if (!empty($_POST)) {
-            if (!empty($_POST['saveNewNote'])) {
-                $Note = new Note();
-                $newNotes = $Note->loadFromArray($_POST);
-                $newNotes->insert(); 
-                $this->redirect($Url::link("admin/notes/index"));
+            if (!empty($_POST['saveNewCategory'])) {
+                $Category = new Category();
+                $newCategories = $Category->loadFromArray($_POST);
+                
+                $newCategories->insert(); 
+                $this->redirect($Url::link("admin/categories/index"));
             } 
             elseif (!empty($_POST['cancel'])) {
-                $this->redirect($Url::link("admin/notes/index"));
+                $this->redirect($Url::link("admin/categories/index"));
             }
         }
         else {
-            $addNoteTitle = "Добавление новой заметки";
-            $this->view->addVar('addNoteTitle', $addNoteTitle);
+            $addCategoryTitle = "Добавление новой категории";
+            $this->view->addVar('addCategoryTitle', $addCategoryTitle);
             
-            $this->view->render('note/add.php');
+            $this->view->render('category/add.php');
         }
     }
     
@@ -69,25 +70,25 @@ class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
         if (!empty($_POST)) { // это выполняется нормально.
             
             if (!empty($_POST['saveChanges'] )) {
-                $Note = new Note();
-                $newNotes = $Note->loadFromArray($_POST);
-                $newNotes->update();
-                $this->redirect($Url::link("admin/notes/index&id=$id"));
+                $Category = new Category();
+                $newCategory = $Category->loadFromArray($_POST);
+                $newCategory->update();
+                $this->redirect($Url::link("admin/categories/index"));
             } 
             elseif (!empty($_POST['cancel'])) {
-                $this->redirect($Url::link("admin/notes/index&id=$id"));
+                $this->redirect($Url::link("admin/categories/index&id=$id"));
             }
         }
         else {
-            $Note = new Note();
-            $viewNotes = $Note->getById($id);
+            $Category = new Category();
+            $viewCategories = $Category->getById($id);
             
-            $editNoteTitle = "Редактирование заметки";
+            $editCategoryTitle = "Редактирование категории";
             
-            $this->view->addVar('viewNotes', $viewNotes);
-            $this->view->addVar('editNoteTitle', $editNoteTitle);
+            $this->view->addVar('viewCategories', $viewCategories);
+            $this->view->addVar('editCategoryTitle', $editCategoryTitle);
             
-            $this->view->render('note/edit.php');   
+            $this->view->render('category/edit.php');   
         }
         
     }
@@ -102,27 +103,27 @@ class CategoriesController extends \ItForFree\SimpleMVC\mvc\Controller
         
         if (!empty($_POST)) {
             if (!empty($_POST['deleteNote'])) {
-                $Note = new Note();
-                $newNotes = $Note->loadFromArray($_POST);
-                $newNotes->delete();
+                $Category = new Category();
+                $newcategories = $Category->loadFromArray($_POST);
+                $newcategories->delete();
                 
-                $this->redirect($Url::link("admin/notes/index"));
+                $this->redirect($Url::link("admin/categories/index"));
               
             }
             elseif (!empty($_POST['cancel'])) {
-                $this->redirect($Url::link("admin/notes/edit&id=$id"));
+                $this->redirect($Url::link("admin/categories/edit&id=$id"));
             }
         }
         else {
             
-            $Note = new Note();
-            $deletedNote = $Note->getById($id);
-            $deleteNoteTitle = "Удалить заметку?";
+            $Category = new Category();
+            $CategoryId = $Category->getById($id);
+            $deleteCategoryTitle = "Удалить категорию";
+
+            $this->view->addVar('deleteCategoryTitle', $deleteCategoryTitle);
+            $this->view->addVar('CategoryId', $CategoryId);
             
-            $this->view->addVar('deleteNoteTitle', $deleteNoteTitle);
-            $this->view->addVar('deletedNote', $deletedNote);
-            
-            $this->view->render('note/delete.php');
+            $this->view->render('category/delete.php');
         }
     }
     

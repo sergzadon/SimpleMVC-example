@@ -16,6 +16,7 @@ SimpleAssetManager::printJS();
    
 </div>
 -->
+
             <div class="footer">
                 Простая PHP CMS &copy; 2017. Все права принадлежат всем. ;) <a href="http://fkn.ktu10.com/?q=node/7716">Site ITForFree</a>
             </div>

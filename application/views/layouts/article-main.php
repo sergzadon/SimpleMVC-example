@@ -16,6 +16,6 @@ $User = Config::getObject('core.user.class');
         <div class="container">
             <?= $CONTENT_DATA ?>
         </div>
-        <?php include('includes/newmain/footerArticle.php'); ?>
+        <?php include('includes/newmain/footer1.php'); ?>
     </body>
 </html>

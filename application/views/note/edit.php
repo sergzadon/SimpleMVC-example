@@ -6,7 +6,7 @@
         color: #003300;
     }
    
-</style>
+</style>a
 
 <?php 
 use ItForFree\SimpleMVC\Config;

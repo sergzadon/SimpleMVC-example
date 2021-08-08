@@ -2,6 +2,7 @@
 use ItForFree\SimpleMVC\Config;
 use ItForFree\SimpleMVC\Url;
 
+
 $User = Config::getObject('core.user.class');
 
 

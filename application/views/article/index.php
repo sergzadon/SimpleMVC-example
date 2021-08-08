@@ -63,4 +63,4 @@ $User = Config::getObject('core.user.class');
 </table>
 
 
-    <p> Список заметок пуст</p>
+    <!--<p> Список заметок пуст</p>-->

@@ -7,7 +7,8 @@ $User = Config::getObject('core.user.class');
 ?>
 <!DOCTYPE html>
 <html>
-    <?php include('includes/newmain/head1.php'); ?>
+    <?php include('includes/main/head.php'); ?>
+    <?php // include('includes/newmain/head1.php'); ?>
     <body>
         <?php // include('includes/main/nav.php'); ?>
         <?php // include('includes/newmain/head2.php'); ?>
@@ -16,6 +17,7 @@ $User = Config::getObject('core.user.class');
         <div class="container">
             <?= $CONTENT_DATA ?>
         </div>
-        <?php include('includes/newmain/footerArticle.php'); ?>
+        <?php include('includes/main/footer.php'); ?>
+        <?php // include('includes/newmain/footerArticle.php'); ?>
     </body>
 </html>

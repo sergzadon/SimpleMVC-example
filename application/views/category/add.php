@@ -1,8 +1,26 @@
-<?php
+<style> 
+    
+    textarea{
+        height: 200%;
+        width: 1110px;
+        color: #003300;
+    }
+   
+</style>
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+<?php include('includes/admin-categories-nav.php'); ?>
+<h2><?= $addCategoryTitle ?></h2>
+
+<form id="addNote" method="post" action="<?= \ItForFree\SimpleMVC\Url::link("admin/categories/add")?>"> 
+    <div class="form-group">
+        <label for="title">Название новой заметки</label>
+        <input type="text" class="form-control" name="name" id="title" placeholder="имя категории">
+    </div>
+    <div class="form-group">
+        <label for="content">Содержание</label><br>
+        <textarea type="description" name="description" placeholred="описание категории"  value=></textarea>
+    </div>
+    <input type="submit" class="btn btn-primary" name="saveNewCategory" value="Сохранить">
+    <input type="submit" class="btn" name="cancel" value="Назад">
+</form>    
 
